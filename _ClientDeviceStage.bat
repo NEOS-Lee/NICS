@@ -33,6 +33,7 @@ if %removebloatware% ==y goto removebloatwarescript
 if %removebloatware% ==n goto skipbloatwareremove
 
 :removebloatwarescript
+
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Detect-HPBloatware.ps1" -Verb RunAs
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Remove-HPBloatwareNew.ps1" -Verb RunAs
 
@@ -45,6 +46,7 @@ if %localadminchoice% ==y goto setuplocaladmin
 if %localadminchoice% ==n goto skiplocaladmin
 
 :setuplocaladmin
+
 set /p LocalAdministratorPassword=Enter Desired Local Admin Password 
 net user Administrator /active:yes "%LocalAdministratorPassword%"
 echo Local Administrator Activated with password: %LocalAdministratorPassword%
@@ -61,6 +63,7 @@ if %InstallApplications% ==N goto appinstallno
 if %InstallApplications% ==n goto appinstallno
 
 :appinstallyes
+
 color 0a
 echo.
 echo Choose Application Option Below
@@ -79,6 +82,7 @@ IF %a%==5 goto appinstallno
 goto appinstallyes
 
 :fullappinstall
+
 "%~dp0ChromeSetup.exe"
 "%~dp0readerdc64_en_xa_mdr_install.exe"
 "%~dp0JavaSetup8u371.exe"
