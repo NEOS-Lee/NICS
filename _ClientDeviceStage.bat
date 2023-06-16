@@ -95,8 +95,9 @@ if %beginwindowsupdate ==y goto updateyes else goto updateno
 
 :updateyes
 
-UsoClient ScanInstallWait
-UsoClient StartInteractiveScan
+powershell -NoProfile -ExecutionPolicy Bypass Install-Module PSWindowsUpdate -Force -Verb RunAs
+powershell -NoProfile -ExecutionPolicy Bypass Import-Module PSWindowsUpdate -Force -Verb RunAs
+powershell -NoProfile -ExecutionPolicy Bypass Get-WindowsUpdate -AcceptAll -Install -AutoReboot -Verb RunAs
 echo Windows Update Proccess Started. 
 echo Updates Will Continue To Download and Install In The Background.
 pause
