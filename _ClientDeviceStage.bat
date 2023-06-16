@@ -36,8 +36,8 @@ if %removebloatware% ==n goto skipbloatwareremove
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Detect-HPBloatware.ps1" -Verb RunAs
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Remove-HPBloatwareNew.ps1" -Verb RunAs
-
 pause
+
 :skipbloatwareremove
 
 echo STAGE 2: Set And Activate Local Admin
@@ -50,9 +50,8 @@ if %localadminchoice% ==n goto skiplocaladmin
 set /p LocalAdministratorPassword=Enter Desired Local Admin Password 
 net user Administrator /active:yes "%LocalAdministratorPassword%"
 echo Local Administrator Activated with password: %LocalAdministratorPassword%
-
-
 pause
+
 :skiplocaladmin
 
 echo STAGE 3: Install Applications
@@ -90,7 +89,21 @@ goto appinstallyes
 
 :appinstallno
 
-echo STAGE4: Rename or Domain Join Device
+echo STAGE 4: Begin Windows Update Process
+set /p beginwindowsupdate= Would You Like To Begin Windows Update Process? Y/N 
+if %beginwindowsupdate ==y goto updateyes else goto updateno
+
+:updateyes
+
+UsoClient ScanInstallWait
+UsoClient StartInteractiveScan
+echo Windows Update Proccess Started. 
+echo Updates Will Continue To Download and Install In The Background.
+pause
+
+:updateno
+
+echo STAGE5: Rename or Domain Join Device
 set /p renameyes=Would You Like To Rename Device / Join To Domain? Y/N 
 if %renameyes% ==y sysdm.cpl else 
 pause
