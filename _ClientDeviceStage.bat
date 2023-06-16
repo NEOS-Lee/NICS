@@ -89,25 +89,28 @@ goto appinstallyes
 
 :appinstallno
 
-echo STAGE 4: Begin Windows Update Process
+echo STAGE4: Rename or Domain Join Device
+set /p renameyes=Would You Like To Rename Device / Join To Domain? Y/N 
+if %renameyes% ==y sysdm.cpl else 
+pause
+
+echo STAGE 5: Begin Windows Update Process
 set /p beginwindowsupdate= Would You Like To Begin Windows Update Process? Y/N 
 if %beginwindowsupdate ==y goto updateyes else goto updateno
 
 :updateyes
 
-powershell -NoProfile -ExecutionPolicy Bypass Install-Module PSWindowsUpdate -Force -Verb RunAs
-powershell -NoProfile -ExecutionPolicy Bypass Import-Module PSWindowsUpdate -Force -Verb RunAs
-powershell -NoProfile -ExecutionPolicy Bypass Get-WindowsUpdate -AcceptAll -Install -AutoReboot -Verb RunAs
+powershell -NoProfile -ExecutionPolicy Bypass Install-Module PSWindowsUpdate -Force -Verb
+powershell -NoProfile -ExecutionPolicy Bypass Import-Module PSWindowsUpdate -Force -Verb
+powershell -NoProfile -ExecutionPolicy Bypass Get-WindowsUpdate -AcceptAll -Install -AutoReboot -Verb
+echo
 echo Windows Update Proccess Started. 
 echo Updates Will Continue To Download and Install In The Background.
+echo
 pause
 
 :updateno
 
-echo STAGE5: Rename or Domain Join Device
-set /p renameyes=Would You Like To Rename Device / Join To Domain? Y/N 
-if %renameyes% ==y sysdm.cpl else 
-pause
 echo Thanks For Using NEOS Device Preparation!
 echo Don't Forget To Remove This User Account If Needed!
 pause
