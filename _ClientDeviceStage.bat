@@ -68,35 +68,42 @@ echo.
 echo Choose Application Option Below
 echo 1. Install Google Chrome
 echo 2. Install Adobe PDF
-echo 3. Install Java JRE
+echo 3. Install Microsoft JDK
 echo 4. Install ALL OF THE ABOVE
 echo 5. Done
 echo.
 set /p a=
 IF %a%==1 "%~dp0ChromeSetup.exe"
 IF %a%==2 "%~dp0readerdc64_en_xa_mdr_install.exe"
-IF %a%==3 "%~dp0JavaSetup8u371.exe"
+IF %a%==3 goto javaInstall
 IF %a%==4 goto fullappinstall
 IF %a%==5 goto appinstallno
+goto appinstallyes
+
+:javaInstall
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://aka.ms/download-jdk/microsoft-jdk-21.0.3-windows-x64.msi', 'winJava.msi')"
+"%~dp0winJava.msi"
 goto appinstallyes
 
 :fullappinstall
 
 "%~dp0ChromeSetup.exe"
 "%~dp0readerdc64_en_xa_mdr_install.exe"
-"%~dp0JavaSetup8u371.exe"
-goto appinstallyes
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://aka.ms/download-jdk/microsoft-jdk-21.0.3-windows-x64.msi', 'winJava.msi')"
+"%~dp0winJava.msi"
 
 :appinstallno
 
 echo STAGE4: Rename or Domain Join Device
 set /p renameyes=Would You Like To Rename Device / Join To Domain? Y/N 
 if %renameyes% ==y sysdm.cpl else 
-pause
 
 echo STAGE 5: Begin Windows Update Process
 set /p beginwindowsupdate= Would You Like To Begin Windows Update Process? Y/N 
-if %beginwindowsupdate ==y goto updateyes else goto updateno
+if %beginwindowsupdate% ==y goto updateyes
+if %beginwindowsupdate% ==Y goto updateyes
+if %beginwindowsupdate% ==n goto updateno
+if %beginwindowsupdate% ==N goto updateno
 
 :updateyes
 
